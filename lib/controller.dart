@@ -11,14 +11,14 @@ enum BaseSide {
 
 class DragToExpandController extends ChangeNotifier{
 
-  AnimationController animationController;
+  AnimationController? animationController;
 
 
   DragToExpandController();
 
 
-  bool get isOpened => animationController.status == AnimationStatus.forward
-    || animationController.status == AnimationStatus.completed;
+  bool get isOpened => animationController!.status == AnimationStatus.forward
+    || animationController!.status == AnimationStatus.completed;
   set isOpened(bool v) {
     if(isOpened == v){ }
     else {
@@ -27,7 +27,7 @@ class DragToExpandController extends ChangeNotifier{
   }
 
   void toggle() {
-    animationController.fling(velocity: isOpened ? -2 : 2);
+    animationController!.fling(velocity: isOpened ? -2 : 2);
     notifyListeners();
   }
 

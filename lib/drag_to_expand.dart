@@ -8,22 +8,22 @@ part 'controller.dart';
 
 
 class DragToExpand extends StatefulWidget {
-  final DragToExpandController controller;
+  final DragToExpandController? controller;
   final int animationDuration;
   final double minSize;
   final double maxSize;
   final BaseSide baseSide;
   final bool toggleOnTap;
-  final Widget draggable, draggableWhenOpened;
+  final Widget? draggable, draggableWhenOpened;
   final Widget child;
   final bool clipOverflow;
 
   DragToExpand({
-    Key key,
+    Key? key,
     this.controller,
-    @required this.draggable,
+    required this.draggable,
     this.draggableWhenOpened,
-    @required this.child,
+    required this.child,
     this.baseSide = BaseSide.bottom,
     this.animationDuration = 500,
     this.minSize = 0,
@@ -40,15 +40,15 @@ class DragToExpand extends StatefulWidget {
 
 class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderStateMixin {
 
-  DragToExpandController _controller;
+  DragToExpandController? _controller;
 
 
   @override
   void initState() {
     _controller = widget.controller ?? DragToExpandController();
-    _controller.addListener(() => setState(() { }));
+    _controller!.addListener(() => setState(() { }));
 
-    _controller.animationController = AnimationController(
+    _controller!.animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: widget.animationDuration),
     );
@@ -68,12 +68,12 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
       details.delta.dx ) / widget.maxSize;
 
     (widget.baseSide == BaseSide.bottom || widget.baseSide == BaseSide.right)
-        ?  _controller.animationController.value -= value : _controller.animationController.value += value;
+        ?  _controller!.animationController!.value -= value : _controller!.animationController!.value += value;
   }
 
   void _onDragEnd(DragEndDetails details) {
-    if (_controller.animationController.isAnimating ||
-        _controller.animationController.status == AnimationStatus.completed
+    if (_controller!.animationController!.isAnimating ||
+        _controller!.animationController!.status == AnimationStatus.completed
     ) {
       // return;
     } else {
@@ -84,14 +84,14 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
       flingVelocity *= (widget.baseSide == BaseSide.bottom || widget.baseSide == BaseSide.right) ? 1 : -1;
 
       if (flingVelocity < 0.0)
-          _controller.animationController.fling(velocity: math.max(2.0, -flingVelocity));
+          _controller!.animationController!.fling(velocity: math.max(2.0, -flingVelocity));
       else if (flingVelocity > 0.0)
-        _controller.animationController.fling(velocity: math.min(-2.0, -flingVelocity));
+        _controller!.animationController!.fling(velocity: math.min(-2.0, -flingVelocity));
       else
-        _controller.animationController.fling(velocity: _controller.animationController.value < 0.5 ? -2.0 : 2.0);
+        _controller!.animationController!.fling(velocity: _controller!.animationController!.value < 0.5 ? -2.0 : 2.0);
     }
 
-    _controller._notifyListeners();
+    _controller!._notifyListeners();
   }
 
   Axis flexDirection() {
@@ -103,11 +103,11 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
         ?  MainAxisAlignment.end : MainAxisAlignment.start;
   }
 
-  Widget expander() {
+  Widget? expander() {
     if(widget.draggableWhenOpened == null)
       return widget.draggable;
 
-    return _controller.isOpened ? widget.draggableWhenOpened : widget.draggable;
+    return _controller!.isOpened ? widget.draggableWhenOpened : widget.draggable;
   }
 
   List<Widget> widgetsCulumn() {
@@ -115,14 +115,14 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
     List<Widget> ret = [
       Flexible(
         child: AnimatedBuilder(
-          animation: _controller.animationController,
+          animation: _controller!.animationController!,
           builder: (context, child) {
             return LayoutBuilder(builder: (_, constraint) {
               return Container(
                 height: flexDirection() == Axis.vertical ?
-                  lerpDouble(widget.minSize, widget.maxSize, _controller.animationController.value) : double.infinity,
+                  lerpDouble(widget.minSize, widget.maxSize, _controller!.animationController!.value) : double.infinity,
                 width: flexDirection() == Axis.horizontal ?
-                  lerpDouble(widget.minSize, widget.maxSize, _controller.animationController.value) : double.infinity,
+                  lerpDouble(widget.minSize, widget.maxSize, _controller!.animationController!.value) : double.infinity,
                 child: widget.clipOverflow == false ?
                   widget.child :
                   Stack(
@@ -149,7 +149,7 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
         child: GestureDetector(
           onTap: () {
             if(widget.toggleOnTap){
-              _controller.toggle();
+              _controller!.toggle();
             }
           },
           onPanUpdate: _onDragUpdate,
