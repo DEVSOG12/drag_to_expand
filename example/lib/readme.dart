@@ -23,7 +23,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   DragToExpandController _dragToExpandController;
 
   @override
@@ -37,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   toggle() - close/open widget depends on its status
     super.initState();
   }
+
   @override
   dispose() {
     _dragToExpandController?.dispose();
@@ -49,12 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: <Widget>[
           Align(
-            alignment: Alignment.center,
-            child: OutlineButton(
-              onPressed: () => _dragToExpandController.isOpened = !_dragToExpandController.isOpened,
-              child: Text('open/close programmatically'),
-            )
-          ),
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: () => _dragToExpandController.isOpened =
+                    !_dragToExpandController.isOpened,
+                child: Text('open/close programmatically'),
+              )),
           Align(
             alignment: Alignment.bottomCenter,
             child: DragToExpand(

@@ -127,7 +127,7 @@ class _DragToExpandState extends State<DragToExpand> with SingleTickerProviderSt
                   widget.child :
                   Stack(
                     fit: StackFit.expand,
-                    overflow: Overflow.clip,
+                    // overflow: Overflow.clip,
                     children: [
                       Positioned(
                         top: 0,
